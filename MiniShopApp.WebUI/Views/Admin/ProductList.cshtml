@@ -1,0 +1,80 @@
+﻿@model List<Product>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h6 class="display-4">Admin Products Managament</h6>
+            <hr />
+            <a href="/admin/products/create" class="btn btn-sm btn-primary">Create Product</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Is Home</th>
+                        <th>Is Approved</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        @foreach (var item in Model)
+                        {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td><img src="~/Images/@item.ImageUrl" width="80" /></td>
+                        <td>@item.Name</td>
+                        <td>
+                            @if (item.IsHome)
+                            {
+                                <i class="fa-solid fa-circle-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-circle-xmark text-danger"></i>
+                            }
+                           
+                        </td>
+                        <td>
+                            @if (item.IsApproved)
+                            {
+                                <i class="fa-solid fa-circle-check text-success"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-circle-xmark text-danger"></i>
+
+                            }
+
+                            <form action="/Admin/IsApprovedPassive" class="d-inline" method="post">
+                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Pasif</button>
+                            </form>
+                            <form action="/Admin/IsApprovedActive" class="d-inline" method="post">
+                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-sm btn-success">Aktif</button>
+                            </form>
+                        </td>
+                        <td>@item.Price</td>
+                        <td>
+                            <a href="/admin/products/@item.ProductId" class="btn btn-primary">Edit</a>
+
+                            <form action="/Admin/ProductDelete" class="d-inline" method="post">
+                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                        }
+                    }
+                    else
+                    {
+                        //ürün olmadıgında yapılacak işlem
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>

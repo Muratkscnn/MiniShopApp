@@ -1,0 +1,22 @@
+﻿@model MiniShopApp.WebUI.Models.ProductDetailModel
+
+<div class="row">
+    <div class="col-md-3">
+        <img src="~/Images/@Model.Product.ImageUrl" class="img-fluid" alt="Alternate Text" />
+    </div>
+    <div class="col-md-9">
+        <h1 class="mb-3">@Model.Product.Name</h1>
+        <hr />
+        @foreach (var item in Model.Categories)
+        {
+            <a class="btn btn-link" href="~/products/@item.Url">@item.Name</a>
+        }
+        <div class="mb-3">
+            <h1 class="text-primary">@Model.Product.Price<i class="fa-solid fa-turkish-lira-sign"></i></h1>
+        </div>
+        <div class="mb-3">
+            <h1 class="text-primary">@Model.Product.Description</h1>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@model List<Category>
+
+<div class="list-group">
+    <a href="/products" class="list-group-item list-group-item-action @(ViewBag.SelectedCategory==null ? "active" : "")">Tümünü Göster</a>
+
+    @foreach (var item in Model)
+    {
+        <a href="/products/@item.Url" class="list-group-item list-group-item-action @(ViewBag.SelectedCategory==item.Url ? "active" : "")">@item.Name</a>
+    }
+</div>
