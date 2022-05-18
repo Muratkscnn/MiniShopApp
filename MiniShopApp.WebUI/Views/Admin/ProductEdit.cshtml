@@ -8,6 +8,8 @@
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Name</label>
                 <div class="col-sm-9"><input type="text" asp-for="Name" /></div>
+                <span class="text-danger" asp-validation-for="Name"></span>
+
             </div>
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Url</label>
@@ -16,14 +18,20 @@
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Description</label>
                 <div class="col-sm-9"><input type="text" asp-for="Description" /></div>
+                <span class="text-danger" asp-validation-for="Description"></span>
+
             </div>
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Image-Url</label>
                 <div class="col-sm-9"><input type="text" asp-for="ImageUrl" /></div>
+                <span class="text-danger" asp-validation-for="ImageUrl"></span>
+
             </div>
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Price</label>
                 <div class="col-sm-9"><input type="text" asp-for="Price" /></div>
+                <span class="text-danger" asp-validation-for="Price"></span>
+
             </div>
             <input type="hidden" name="ProductId" value="@Model.ProductId" />
             <div class="form-group row mb-2">

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MiniShopApp.Business.Concrete
 {
-    public class ProductManager : IProductService
+    public class ProductManager : IProductService,IValidator<Product>
     {
         IProductRepository _productRepository;
 
@@ -18,14 +18,21 @@ namespace MiniShopApp.Business.Concrete
             _productRepository = productRepository;
         }
 
+        public string Error { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void Create(Product entity)
         {
             _productRepository.Create(entity);
         }
 
-        public void Create(Product entity, int[] categoryIds)
+        public bool Create(Product entity, int[] categoryIds)
         {
-            _productRepository.Create(entity, categoryIds);
+            if (Validation(entity))
+            {
+                _productRepository.Create(entity, categoryIds);
+                return true;
+            }
+            return false;
         }
 
         public void Delete(Product entity)
@@ -82,6 +89,22 @@ namespace MiniShopApp.Business.Concrete
         public void Update(Product entity, int[] categoryIds)
         {
             _productRepository.Update(entity, categoryIds);
+        }
+
+        public bool Validation(Product entity)
+        {
+            var isValid = true;
+            if (string.IsNullOrEmpty(entity.Name))
+            {
+                Error += $"ürün adı boş geçilemez. \n";
+                isValid = false;
+            }
+            if (entity.Price<1)
+            {
+                Error += $"ürün fiyatı boş geçilemez. \n";
+                isValid = false;
+            }
+            return isValid;
         }
     }
 }

@@ -38,42 +38,51 @@ namespace MiniShopApp.WebUI.Controllers
         [HttpPost]
         public IActionResult ProductCreate(ProductModel model,int[] categoryIds)
         {
-            var product = new Product()
+            if (ModelState.IsValid)
             {
-                Name = model.Name,
-                Url = model.Url,
-                Price = model.Price,
-                Description = model.Description,
-                ImageUrl = model.ImageUrl,
-                IsApproved = model.IsApproved,
-                IsHome = model.IsHome
-            };
-            _productService.Create(product,categoryIds);
-            return RedirectToAction("ProductList");
+                var product = new Product()
+                {
+                    Name = model.Name,
+                    Url = model.Url,
+                    Price = model.Price,
+                    Description = model.Description,
+                    ImageUrl = model.ImageUrl,
+                    IsApproved = model.IsApproved,
+                    IsHome = model.IsHome
+                };
+                _productService.Create(product, categoryIds);
+                return RedirectToAction("ProductList");
+            }
+            ViewBag.Categories = _categoryService.GetAll();
+            return View(model);
         }
         public IActionResult ProductEdit(int? id)
         {
-            var entity = _productService.GetByIdWithCategories((int)id);
-            var model = new ProductModel()
-            {
-                ProductId = entity.ProductId,
-                Name = entity.Name,
-                Url = entity.Url,
-                Price = entity.Price,
-                Description = entity.Description,
-                ImageUrl = entity.ImageUrl,
-                IsApproved = entity.IsApproved,
-                IsHome = entity.IsHome,
-                SelectedCategories = entity.ProductCategories.Select(x => x.Category).ToList()
-            };
-            ViewBag.Categories = _categoryService.GetAll();
+            
+                var entity = _productService.GetByIdWithCategories((int)id);
+                var model = new ProductModel()
+                {
+                    ProductId = entity.ProductId,
+                    Name = entity.Name,
+                    Url = entity.Url,
+                    Price = entity.Price,
+                    Description = entity.Description,
+                    ImageUrl = entity.ImageUrl,
+                    IsApproved = entity.IsApproved,
+                    IsHome = entity.IsHome,
+                    SelectedCategories = entity.ProductCategories.Select(x => x.Category).ToList()
+                };
+                ViewBag.Categories = _categoryService.GetAll();
 
-            return View(model);
+                return View(model);
+         
         }
         [HttpPost]
         public IActionResult ProductEdit(ProductModel model,int[] categoryIds)
         {
-            var entity = _productService.GetById(model.ProductId);
+            if (ModelState.IsValid)
+            {
+                var entity = _productService.GetById(model.ProductId);
             entity.Name = model.Name;
             entity.Price = model.Price;
             entity.Url = model.Url;
@@ -83,6 +92,10 @@ namespace MiniShopApp.WebUI.Controllers
             entity.ImageUrl = model.ImageUrl;
             _productService.Update(entity, categoryIds);
             return RedirectToAction("ProductList");
+            }
+            ViewBag.Categories = _categoryService.GetAll();
+            return View(model);
+
         }
         public IActionResult ProductDelete(int productId)
         {
