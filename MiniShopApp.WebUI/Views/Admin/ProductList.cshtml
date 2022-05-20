@@ -1,80 +1,68 @@
 ﻿@model List<Product>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h6 class="display-4">Admin Products Managament</h6>
-            <hr />
-            <a href="/admin/products/create" class="btn btn-sm btn-primary">Create Product</a>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Is Home</th>
-                        <th>Is Approved</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Count > 0)
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="display-4">Admin Products Managament</h6>
+        <hr />
+        <a href="/admin/products/create" class="btn btn-sm btn-primary">Create Product</a>
+        <table class="table table-bordered mt-2">
+            <thead>
+                <tr>
+                    <th width="30">ID</th>
+                    <th width="100">Image</th>
+                    <th>Name</th>
+                    <th width="30">Home</th>
+                    <th width="30">Approved</th>
+                    <th width="30">Price</th>
+                    <th width="140">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
+                {
+                    @foreach (var product in Model)
                     {
-                        @foreach (var item in Model)
-                        {
-                    <tr>
-                        <td>@item.ProductId</td>
-                        <td><img src="~/Images/@item.ImageUrl" width="80" /></td>
-                        <td>@item.Name</td>
-                        <td>
-                            @if (item.IsHome)
-                            {
-                                <i class="fa-solid fa-circle-check text-success"></i>
-                            }
-                            else
-                            {
-                                <i class="fa-solid fa-circle-xmark text-danger"></i>
-                            }
-                           
-                        </td>
-                        <td>
-                            @if (item.IsApproved)
-                            {
-                                <i class="fa-solid fa-circle-check text-success"></i>
-                            }
-                            else
-                            {
-                                <i class="fa-solid fa-circle-xmark text-danger"></i>
-
-                            }
-
-                            <form action="/Admin/IsApprovedPassive" class="d-inline" method="post">
-                                <input type="hidden" name="ProductId" value="@item.ProductId" />
-                                <button type="submit" class="btn btn-sm btn-danger">Pasif</button>
-                            </form>
-                            <form action="/Admin/IsApprovedActive" class="d-inline" method="post">
-                                <input type="hidden" name="ProductId" value="@item.ProductId" />
-                                <button type="submit" class="btn btn-sm btn-success">Aktif</button>
-                            </form>
-                        </td>
-                        <td>@item.Price</td>
-                        <td>
-                            <a href="/admin/products/@item.ProductId" class="btn btn-primary">Edit</a>
-
-                            <form action="/Admin/ProductDelete" class="d-inline" method="post">
-                                <input type="hidden" name="ProductId" value="@item.ProductId" />
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                        }
+                        <tr>
+                            <td>@product.ProductId</td>
+                            <td><img src="~/img/@product.ImageUrl" width="80" /></td>
+                            <td>@product.Name</td>
+                            <td>
+                                @if (product.IsHome)
+                                {
+                                    <i class="fa-solid fa-circle-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-circle-xmark text-danger"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (product.IsApproved)
+                                {
+                                    <i class="fa-solid fa-circle-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-circle-xmark text-danger"></i>
+                                }
+                            </td>
+                            <td>@product.Price</td>
+                            <td>
+                                <a href="/admin/products/@product.ProductId" class="btn btn-sm btn-primary mr-1">Edit</a>
+                                <form action="/Admin/ProductDelete" method="post" class="d-inline" >
+                                    <input type="hidden" name="productId" value="@product.ProductId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        //ürün olmadıgında yapılacak işlem
-                    }
+                }
+                else
+                {
+                    //ÜRün olmadığında yapılacak işlem
+                }
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>

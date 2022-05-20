@@ -11,49 +11,67 @@ namespace MiniShopApp.WebUI.Controllers
 {
     public class MiniShopController : Controller
     {
-        IProductService _product;
-
-        public MiniShopController(IProductService product)
+        private IProductService _productService;
+        public MiniShopController(IProductService productService)
         {
-            _product = product;
+            _productService=productService;
         }
-
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult List(string Category,int page=1)
+
+        public IActionResult List(string category, int page=1)
         {
-            ViewBag.AlertType = "Success";
-            ViewBag.Message = "Ürün Bulunamadı";
-            const int pageSize = 3;
-            var totalItems = _product.GetCountByCategory(Category);
+            ViewBag.Message = "Ürün bulunamadı";
+            ViewBag.AlertType = "warning";
+            //ÖDEV:
+            //Bu işi ister model kullanarak şu an olduğu gibi partial yapıyla
+            //İsterseniz ise daha farklı bir yol olarak ViewComponent mantığıyla
+            //Çözün.
+
+            //***********************************
+
+            const int pageSize = 5;//bu değişken her sayfada kaç item görüneceğini tutacak
+            int totalItems = _productService.GetCountByCategory(category);
             var productListViewModel = new ProductListViewModel()
             {
-                PageInfo = new PageInfo { TotalItems = totalItems, CurrentPage = page, ItemsPerPage = pageSize, CurrentCategory = Category },
-                Products = _product.GetProductsByCategory(Category,page,pageSize)
+                PageInfo = new PageInfo
+                {
+                    TotalItems= totalItems,
+                    CurrentPage= page,
+                    ItemsPerPage= pageSize,
+                    CurrentCategory = category
+                },
+                Products= _productService.GetProductsByCategory(category, page, pageSize)
             };
             return View(productListViewModel); 
         }
+
         public IActionResult Details(string url)
         {
             if (url==null)
             {
                 return NotFound();
             }
-            Product product = _product.GetProductDetails(url);
+            Product product = _productService.GetProductDetails(url);
             if (product==null)
             {
                 return NotFound();
             }
-            ProductDetailModel productDetail = new ProductDetailModel() { Product = product, Categories = product.ProductCategories.Select(x => x.Category).ToList() };
-            return View(productDetail);
+            ProductDetailModel productDetail = new ProductDetailModel()
+            {
+                Product = product,
+                Categories = product.ProductCategories.Select(i => i.Category).ToList() 
+            };
+            return View(productDetail);  
         }
-        [HttpPost]
+
         public IActionResult Search(string q)
         {
-            
-            return View(_product.GetSearchResult(q));
+            //Bize arama kriterinin (q) uygun olduğu, eşleştiği TÜM ÜRÜNLERİ
+            //döndürecek bir METOT lazım.
+            return View(_productService.GetSearchResult(q)); 
         }
     }
 }

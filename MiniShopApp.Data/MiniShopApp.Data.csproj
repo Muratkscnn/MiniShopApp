@@ -5,16 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Concrete\MySql\**" />
+    <Compile Remove="Concrete\Oracle\**" />
+    <EmbeddedResource Remove="Concrete\MySql\**" />
+    <EmbeddedResource Remove="Concrete\Oracle\**" />
+    <None Remove="Concrete\MySql\**" />
+    <None Remove="Concrete\Oracle\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.16" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.16">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

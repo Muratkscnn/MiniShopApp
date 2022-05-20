@@ -11,21 +11,19 @@ namespace MiniShopApp.Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
-        ICategoryRepository _categoryRepository;
-
+        private ICategoryRepository _categoryRepository;
         public CategoryManager(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
-
         public void Create(Category entity)
         {
-            _categoryRepository.Create(entity);
+            throw new NotImplementedException();
         }
 
         public void Delete(Category entity)
         {
-            _categoryRepository.Create(entity);
+            throw new NotImplementedException();
         }
 
         public List<Category> GetAll()

@@ -1,14 +1,20 @@
-﻿
-@model Product
-
-
+﻿@model Product
 <div class="card mb-2">
-    <img src="~/images/@Model.ImageUrl" class="card-img" height="400px">
+    <div class="card-img p-2 text-md-center">
+        <img src="~/img/@Model.ImageUrl" class="img-fluid"/>
+    </div>
+    
     <div class="card-body">
         <h5 class="card-title text-center">@Model.Name</h5>
-        <small class="text-muted"><i class="fa-solid fa-turkish-lira-sign"></i> @Model.Price</small>
-        <div class="card-footer text-center bg-white d-flex justify-content-around p-1">
-            <a asp-controller="MiniShop" asp-action="Details" asp-route-url="@Model.Url" class="btn btn-sm btn-primary">Detail</a>
+        <small class="text-muted">
+            <i class="fa-solid fa-turkish-lira-sign"></i>@Model.Price
+        </small>
+        <div class="card-footer bg-white text-center d-flex justify-content-around p-1">
+            <a 
+               asp-controller="MiniShop"
+               asp-action="Details"
+               asp-route-url=@Model.Url
+               class="btn btn-sm btn-primary">Detail</a>
             <a href="#" class="btn btn-sm btn-success">Add to Card</a>
         </div>
     </div>

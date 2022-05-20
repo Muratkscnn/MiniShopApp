@@ -8,6 +8,6 @@ namespace MiniShopApp.Business.Concrete
 {
     public class ChangeCase
     {
-       
+
     }
 }

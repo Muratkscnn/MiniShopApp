@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MiniShopApp.Entity
 {
@@ -14,10 +10,8 @@ namespace MiniShopApp.Entity
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public string Url { get; set; }
-
         public bool IsApproved { get; set; }
         public bool IsHome { get; set; }
         public List<ProductCategory> ProductCategories { get; set; }
-
     }
 }

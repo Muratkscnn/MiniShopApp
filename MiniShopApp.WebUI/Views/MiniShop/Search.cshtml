@@ -1,15 +1,14 @@
 ﻿@model List<Product>
     <div class="row">
-
         <div class="col-md-3">
             @await Component.InvokeAsync("Categories")
         </div>
         <div class="col-md-9">
             <div class="row">
-                @foreach (var item in Model)
+                @foreach (var product in Model)
                 {
                     <div class="col-md-4">
-                        <partial name="_product" model="item" />
+                        <partial name="_Product" model="product" />
                     </div>
                 }
             </div>

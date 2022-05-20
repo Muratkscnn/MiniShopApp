@@ -1,34 +1,37 @@
 ﻿@model List<Product>
-
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="row">
     <div class="col-md-3">
+        @* Buraya kategoriler gelecek *@
         @await Component.InvokeAsync("Categories")
         <div class="card mt-3">
             <div class="card-header">
                 <h5>Search</h5>
-                <div class="card-body">
-                    <form action="Search" method="post">
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="q" placeholder="Search" />
-                            <button type="submit" class="btn btn-danger w-100 mt-3">Search</button>
+            </div>
+            <div class="card-body">
+                <form action="Search">
+                    <div class="form-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search" />
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-danger w-100">Search</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
     <div class="col-md-9">
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var product in Model)
             {
-            <div class="col-md-4">
-                @await Html.PartialAsync("_Product", item)
-                @*<partial name="_product" model="item" />*@
-            </div>
+                <div class="col-md-4">
+                   @await Html.PartialAsync("_Product", product)
+                    @*<partial name="_Product" model="product" />*@
+                </div>
             }
         </div>
     </div>
