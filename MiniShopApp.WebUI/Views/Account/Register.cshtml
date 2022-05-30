@@ -1,0 +1,76 @@
+﻿@model RegisterModel
+<h6 class="display-4">Register</h6>
+<hr />
+<form asp-controller="Account" asp-action="Register" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">First Name:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="FirstName" type="text" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">Last Name:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="LastName" type="text" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">User Name:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="UserName" type="text" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">Email:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Email" type="text" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">Password:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="Password" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-3">
+                    <label class="col-form-label">Re-Password:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="RePassword" class="form-control" />
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-9 offset-sm-3">
+                    <button class="btn btn-primary">Register</button>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

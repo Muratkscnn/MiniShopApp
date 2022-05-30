@@ -22,10 +22,15 @@ namespace MiniShopApp.WebUI.Models
         [Required(ErrorMessage = "Açıklama zorunludur!")]
         [StringLength(500, MinimumLength = 20, ErrorMessage = "Açıklama 20-500 karakter uzunluğunda olmalıdır!")]
         public string Description { get; set; }
+
         public string ImageUrl { get; set; }
+        //[Required(ErrorMessage ="Lütfen URL bilgisini giriniz!")]
+        public string Url { get; set; }
+
         public bool IsApproved { get; set; }
 
         public bool IsHome { get; set; }
+
         public List<Category> SelectedCategories { get; set; }
     }
 }

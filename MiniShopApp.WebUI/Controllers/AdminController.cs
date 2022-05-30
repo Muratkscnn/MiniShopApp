@@ -31,22 +31,22 @@ namespace MiniShopApp.WebUI.Controllers
         {
             return View(_productService.GetAll());
         }
+
         public IActionResult ProductCreate()
         {
             ViewBag.Categories = _categoryService.GetAll();
             return View();
         }
         [HttpPost]
-        public IActionResult ProductCreate(ProductModel model, int[] categoryIds,IFormFile file)
+        public IActionResult ProductCreate(ProductModel model, int[] categoryIds, IFormFile file)
         {
-            if (ModelState.IsValid && categoryIds.Length > 0 && file != null)
+            if (ModelState.IsValid && categoryIds.Length>0 && file!=null)
             {
-                JobManager urlGenerate = new JobManager();
-                var url = urlGenerate.MakeUrl(model.Name);
-                model.ImageUrl = urlGenerate.UploadImage(file, url);
-            var product = new Product()
-            {
-                Name = model.Name,
+                var url = JobManager.MakeUrl(model.Name);
+                model.ImageUrl = JobManager.UploadImage(file, url);
+                var product = new Product()
+                {
+                    Name = model.Name,
                     Url = url,
                     Price = model.Price,
                     Description = model.Description,
@@ -59,7 +59,8 @@ namespace MiniShopApp.WebUI.Controllers
                 CreateMessage("Ürün eklenmiştir", "success");
                 return RedirectToAction("ProductList");
             }
-            ViewBag.Categories = _categoryService.GetAll();
+            //İşler yolunda gitmediyse
+
             if (categoryIds.Length>0)
             {
                 model.SelectedCategories = categoryIds.Select(catId => new Category()
@@ -69,8 +70,14 @@ namespace MiniShopApp.WebUI.Controllers
             }
             else
             {
-                ViewBag.CategoryMessage = "Lütfen Bir kategori seçimi yapınız..";
+                ViewBag.CategoryMessage = "Lütfen en az bir kategori seçiniz!";
             }
+
+            if (file==null)
+            {
+                ViewBag.ImageMessage = "Lütfen bir resim seçiniz!";
+            }
+            ViewBag.Categories = _categoryService.GetAll();
             return View(model);
 
         }
@@ -81,6 +88,7 @@ namespace MiniShopApp.WebUI.Controllers
             {
                 ProductId = entity.ProductId,
                 Name = entity.Name,
+                Url = entity.Url,
                 Price = entity.Price,
                 Description = entity.Description,
                 ImageUrl = entity.ImageUrl,
@@ -102,6 +110,7 @@ namespace MiniShopApp.WebUI.Controllers
             var entity = _productService.GetById(model.ProductId);
             entity.Name = model.Name;
             entity.Price = model.Price;
+            entity.Url = model.Url;
             entity.Description = model.Description;
             entity.IsApproved = model.IsApproved;
             entity.IsHome = model.IsHome;

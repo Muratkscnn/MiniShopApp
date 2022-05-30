@@ -1,0 +1,36 @@
+﻿@model LoginModel
+    <h6 class="display-4">Login</h6>
+    <hr />
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <div class="row">
+            <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+            <div class="col-md-6">
+                <div asp-validation-summary="All" class="text-danger">
+                    <div class="form-group row mb-2">
+                        <div class="col-sm-3">
+                            <label asp-for="UserName" class="col-form-label"></label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input asp-for="UserName" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <div class="col-sm-3">
+                            <label asp-for="Password" class="col-form-label"></label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input asp-for="Password" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button class="btn btn-primary">Login</button>
+                            <a href="#" class="btn btn-link">Forgot Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>

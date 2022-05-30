@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Concrete\MySql\**" />
-    <Compile Remove="Concrete\Oracle\**" />
-    <EmbeddedResource Remove="Concrete\MySql\**" />
-    <EmbeddedResource Remove="Concrete\Oracle\**" />
-    <None Remove="Concrete\MySql\**" />
-    <None Remove="Concrete\Oracle\**" />
+    <Folder Include="Concrete\MySql\" />
+    <Folder Include="Concrete\Oracle\" />
   </ItemGroup>
 
   <ItemGroup>
