@@ -13,6 +13,7 @@ namespace MiniShopApp.WebUI.Controllers
 {
     public class AccountController : Controller
     {
+
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private IEmailSender _emailSender;
@@ -129,8 +130,68 @@ namespace MiniShopApp.WebUI.Controllers
             CreateMessage("Hesabınız onaylanamadı. Lütfen bilgileri kontrol ederek, yeniden deneyiniz!","warning");
             return View();
         }
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                CreateMessage("Lütfen e-mail Adresini yazınız", "warning");
+                return View();
+            }
 
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user==null)
+            {
+                CreateMessage("Böyle bir mail adresi bulunamadı", "warning");
+                return View();
+            }
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var url = Url.Action("ResetPassword", "Account", new
+            {
+                userId = user.Id,
+                token = code
+            });
+            await _emailSender.SendEmailAsync(email,"MiniShopApp Reset Password",$"Parolanızı yeniden belirlemek için <a href='https://localhost:5001{url}'>tıklayınız</a>");
+            CreateMessage("Parola değiştirmeniz için gerekli link mail adresinize yollanmıştır","success");
+            return Redirect("~/");
+        }
+        public IActionResult ResetPassword(string userId,string token)
+        {
+            if (userId==null || token==null)
+            {
+                CreateMessage("Geçersiz İşlem!", "danger");
+                return RedirectToAction("Index", "Home");
+            }
+            var model = new ResetPasswordModel() { Token = token };
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user==null)
+            {
+                CreateMessage("Böyle bir kullanıcı bulunadı!", "danger");
+                return Redirect("~/");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                CreateMessage("Şifre değiştirme işleminiz başarıyla gerçekleşti", "success");
+                return RedirectToAction("Login");
+            }
+            CreateMessage("Birşeyler ters gitti tekrar deneyiniz!", "danger");
+            return View(model);
+        }
         private void CreateMessage(string message, string alertType)
         {
             var msg = new AlertMessage()
@@ -140,5 +201,6 @@ namespace MiniShopApp.WebUI.Controllers
             };
             TempData["Message"] = JsonConvert.SerializeObject(msg);
         }
+        
     }
 }

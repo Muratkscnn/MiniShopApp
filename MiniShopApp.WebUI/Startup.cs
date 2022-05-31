@@ -58,7 +58,7 @@ namespace MiniShopApp.WebUI
             });
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/acoount/login";
+                options.LoginPath = "/account/login";
                 options.LogoutPath = "/account/logout";
                 options.AccessDeniedPath = "/account/accessdenied";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
