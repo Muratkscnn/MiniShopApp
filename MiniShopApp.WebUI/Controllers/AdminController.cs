@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MiniShopApp.Business.Abstract;
 using MiniShopApp.Business.Concrete;
+using MiniShopApp.Core;
 using MiniShopApp.Entity;
 using MiniShopApp.WebUI.Identity;
 using MiniShopApp.WebUI.Models;
@@ -17,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace MiniShopApp.WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService; 
         private RoleManager<IdentityRole> _roleManager;
         private UserManager<User> _userManager;
 
@@ -30,13 +31,40 @@ namespace MiniShopApp.WebUI.Controllers
             _productService = productService;
             _categoryService = categoryService;
             _roleManager = roleManager;
-            _userManager = userManager;
+            _userManager = userManager; 
+        }
+        public async Task<IActionResult> UserEdit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user!=null)
+            {
+                var selectedRoles = await _userManager.GetRolesAsync(user);
+                var roles =_roleManager.Roles.Select(x=>x.Name);
+                ViewBag.Roles = roles;
+
+                return View(new UserDetailsModel()
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    EmailConfirmed = user.EmailConfirmed,
+                    SelectedRoles = selectedRoles
+
+                });
+            }
+            return Redirect("~/admin/user/list");
+        }
+       
+        public IActionResult UserList()
+        {
+            return View(_userManager.Users);
         }
         public IActionResult RoleList()
         {
-
             return View(_roleManager.Roles);
         }
+
         public IActionResult RoleCreate()
         {
             return View();
@@ -46,19 +74,95 @@ namespace MiniShopApp.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _roleManager.CreateAsync( new IdentityRole(model.Name) );
+                var result = await _roleManager.CreateAsync(
+                    new IdentityRole(model.Name)
+                    );
                 if (result.Succeeded)
                 {
                     return RedirectToAction("RoleList");
                 }
+
+                //Geri kalan kısmına yarın devam edeceğiz.
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
             }
-            
-            return View();
+            return View(model);  
+        }
+
+        public async Task<IActionResult> RoleEdit(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            var members = new List<User>();
+            var nonMembers = new List<User>();
+
+            foreach (var user in _userManager.Users)
+            {
+                //if (await _userManager.IsInRoleAsync(user,role.Name))
+                //{
+                //    members.Add(user);
+                //}
+                //else
+                //{
+                //    nonMembers.Add(user);
+                //}
+
+                var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                list.Add(user);
+            }
+            var model = new RoleDetails()
+            {
+                Role = role,
+                Members = members,
+                NonMembers = nonMembers
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> RoleEdit(RoleEditModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var userId in model.IdsToAdd ?? new string[] { })
+                {
+                    var user = await _userManager.FindByIdAsync(userId);
+                    if (user!=null)
+                    {
+                        var result = await _userManager.AddToRoleAsync(user, model.RoleName);
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var userId in model.IdsToDelete ?? new string[] { })
+                {
+                    var user = await _userManager.FindByIdAsync(userId);
+                    if (user != null)
+                    {
+                        var result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                        }
+                    }
+                }
+            }
+            return Redirect("/admin/role/" + model.RoleId);
         }
         public IActionResult Index()
         {
             return View();
         }
+        
         public IActionResult ProductList()
         {
             return View(_productService.GetAll());
@@ -88,7 +192,7 @@ namespace MiniShopApp.WebUI.Controllers
                 };
                 _productService.Create(product, categoryIds);
 
-                CreateMessage("Ürün eklenmiştir", "success");
+                TempData["Message"]=JobManager.CreateMessage("Ürün Ekleme","Ürün eklenme işlemi başarı ile tamamlanmıştır", "success");
                 return RedirectToAction("ProductList");
             }
             //İşler yolunda gitmediyse
@@ -158,14 +262,5 @@ namespace MiniShopApp.WebUI.Controllers
             return RedirectToAction("ProductList");
         }
 
-        private void CreateMessage(string message, string alertType)
-        {
-            var msg = new AlertMessage()
-            {
-                Message = message,
-                AlertType = alertType
-            };
-            TempData["Message"] = JsonConvert.SerializeObject(msg);
-        }
     }
 }

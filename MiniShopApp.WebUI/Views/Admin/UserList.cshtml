@@ -1,0 +1,65 @@
+﻿@model IEnumerable<User>
+@section Css {
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+}
+@section Scripts{ 
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#userList').DataTable();
+        });
+    </script>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="display-4">User List</h6>
+        <hr />
+        <a href="/admin/user/create" class="btn btn-sm btn-primary">Create User</a>
+        <hr />
+        <table data-page-length="3" class="table table-sm table-striped table-hover" id="userList">
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>User Name</td>
+                    <td>Email</td>
+                    <td>Email Confirmed</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    @foreach (var user in Model)
+                    {
+                        <tr class="@(user.EmailConfirmed?"":"bg-warning")">
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>@user.EmailConfirmed</td>
+                            <td>
+                                <a href="/admin/user/@user.Id" class="btn btn-sm btn-primary mr-2">Edit</a>
+                                <form action="/admin/user/delete" method="post" class="d-inline">
+                                    <input type="hidden" name="UserId" value="@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-warning">
+                                <h4>No Users!</h4>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

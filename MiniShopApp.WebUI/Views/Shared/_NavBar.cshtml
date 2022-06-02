@@ -9,18 +9,33 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <div>
                     <ul class="navbar-nav flex-grow-1">
+
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="MiniShop" asp-action="List" asp-route-category="">Products</a>
                         </li>
+
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a href="/admin/products" class="nav-link text-dark">Admin Products</a>
-                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a href="/admin/products" class="nav-link text-dark">Admin Products</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/role/list" class="nav-link text-dark">Roles</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/user/list" class="nav-link text-dark">Users</a>
+                                </li>
+                            }
+
                         }
+
                     </ul>
                 </div>
-                <div>   
+                <div>
+
                     <ul class="navbar-nav flex-grow-1">
                         @if (!User.Identity.IsAuthenticated)
                         {
@@ -34,10 +49,10 @@
                         else
                         {
                             <li class="nav-item">
-                                <a href="/account/manage" class="nav-link text-dark">@User.Identity.Name  </a>
+                                <a href="/account/manage" class="nav-link text-dark">@User.Identity.Name </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/account/logout" class="nav-link text-dark">Logout  </a>
+                                <a href="/account/logout" class="nav-link text-dark">Logout</a>
                             </li>
                         }
 
