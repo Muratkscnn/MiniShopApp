@@ -1,0 +1,75 @@
+﻿
+@model MiniShopApp.WebUI.Models.UserDetailsModel
+
+<h5 class="display-4">Create User</h5>
+<hr />
+<form asp-controller="Admin" asp-action="UserCreate" method="post">
+    <div class="row">
+        <div asp-validation-summary="All" class="text-danger">
+
+        </div>
+        <div class="col-md-8">
+            <div class="form-group row mb-2">
+                <label class="col-form-label col-sm-3">First Name:</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="FirstName" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-form-label col-sm-3">LastName:</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="LastName" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-form-label col-sm-3">UserName:</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="UserName" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-form-label col-sm-3">Email:</label>
+                <div class="col-sm-9">
+                    <input type="text" asp-for="Email" class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="form-group row mb-2">
+                <div class="col-sm-9">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @foreach (var item in ViewBag.Roles)
+            {
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" value="@item" name="selectedRoles" id="@item"
+                           @{try
+                               {
+                                   if (Model != null)
+                                   {
+                                    @(Model.SelectedRoles.Any(i => i == item) ? "checked" : "")
+
+                                   }
+                               }
+                               catch (Exception)
+                               {
+
+                               }} />
+                    <label class="form-check-label">@item</label>
+                </div>
+            }
+
+            <hr />
+            <div class="form-check">
+                <input type="checkbox" asp-for="EmailConfirmed" class="form-check-input" />
+                <label class="form-check-label">Email Confirmed</label>
+            </div>
+        </div>
+    </div>
+</form>

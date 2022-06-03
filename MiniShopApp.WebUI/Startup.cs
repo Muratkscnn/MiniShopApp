@@ -89,7 +89,7 @@ namespace MiniShopApp.WebUI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,UserManager<User> userManager,RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -111,6 +111,11 @@ namespace MiniShopApp.WebUI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "adminusercreate",
+                    pattern: "admin/user/UserCreate",
+                    defaults: new { controller = "Admin", action = "UserCreate" }
+                    );
                 endpoints.MapControllerRoute(
                     name: "adminuserlist",
                     pattern: "admin/user/list",
@@ -175,6 +180,8 @@ namespace MiniShopApp.WebUI
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            SeedIdentity.Seed(userManager, roleManager, Configuration).Wait();
         }
     }
 }

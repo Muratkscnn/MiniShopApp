@@ -33,6 +33,40 @@ namespace MiniShopApp.WebUI.Controllers
             _roleManager = roleManager;
             _userManager = userManager; 
         }
+        public IActionResult UserCreate()
+        {
+            var roles = _roleManager.Roles.Select(x => x.Name);
+            ViewBag.Roles = roles;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserCreate(UserDetailsModel model,string[] selectedRoles)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    EmailConfirmed = model.EmailConfirmed
+                };
+                var result = await _userManager.CreateAsync(user, "Qwe123.");
+                if (result.Succeeded)
+                {
+                    selectedRoles = selectedRoles ?? new string[] { };
+                    await _userManager.AddToRolesAsync(user, selectedRoles);
+                    return Redirect("~/admin/user/list");
+                }
+                var roles = _roleManager.Roles.Select(x => x.Name);
+                ViewBag.Roles = roles;
+                return View();
+            }
+            var roles2 = _roleManager.Roles.Select(x => x.Name);
+            ViewBag.Roles = roles2;
+            return View();
+        }
         public async Task<IActionResult> UserEdit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -47,6 +81,7 @@ namespace MiniShopApp.WebUI.Controllers
                     UserId = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    UserName = user.UserName,
                     Email = user.Email,
                     EmailConfirmed = user.EmailConfirmed,
                     SelectedRoles = selectedRoles
@@ -54,6 +89,46 @@ namespace MiniShopApp.WebUI.Controllers
                 });
             }
             return Redirect("~/admin/user/list");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserEdit(UserDetailsModel model,string[] selectedRoles)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user!=null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+                    user.EmailConfirmed = model.EmailConfirmed;
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        selectedRoles = selectedRoles ?? new string[] { };
+                        await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles).ToArray<string>()); //hali hazırda verilen rollerin dışında bir rol varsa ekle.
+                        await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles).ToArray<string>());
+                        return Redirect("~/admin/user/list");
+                    }
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    var roles = _roleManager.Roles.Select(x => x.Name);
+                    ViewBag.Roles = roles;
+                    return View(model);
+                }
+                ModelState.AddModelError("", "Böyle bir kullanıcı yok!");
+                var roles2 = _roleManager.Roles.Select(x => x.Name);
+                ViewBag.Roles = roles2;
+                return View(model);
+            }
+            var roles3 = _roleManager.Roles.Select(x => x.Name);
+            ViewBag.Roles = roles3;
+            return View(model);
         }
        
         public IActionResult UserList()
