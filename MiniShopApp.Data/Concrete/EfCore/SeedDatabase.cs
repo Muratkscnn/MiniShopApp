@@ -41,22 +41,22 @@ namespace MiniShopApp.Data.Concrete.EfCore
 
         private static Product[] Products =
         {
-            new Product {Name="Samsung S10", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s10", IsApproved=true, IsHome=true},
-            new Product {Name="Samsung S11", Price=16000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s11", IsApproved=true, IsHome=true},
-            new Product {Name="Samsung S12", Price=17000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s12", IsApproved=true, IsHome=true},
-            new Product {Name="Samsung S20", Price=18000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s20", IsApproved=true, IsHome=true},
+            new Product {Name="Samsung S10", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s10", IsApproved=true, IsHome=true, ImageUrl="1.png"},
+            new Product {Name="Samsung S11", Price=16000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s11", IsApproved=true, IsHome=true, ImageUrl="2.png"},
+            new Product {Name="Samsung S12", Price=17000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s12", IsApproved=true, IsHome=true, ImageUrl="3.png"},
+            new Product {Name="Samsung S20", Price=18000, Description="Bu telefon çok iyi bir telefon.", Url="samsung-s20", IsApproved=true, ImageUrl="4.png"},
 
-            new Product {Name="Xaomi Redmi 9 Pro", Price=13000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-9-pro", IsApproved=true, IsHome=true},
-            new Product {Name="Xaomi Redmi 10 Pro", Price=14000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-10-pro", IsApproved=true, IsHome=true},
-            new Product {Name="Xaomi Redmi 11 Pro", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-11-pro", IsApproved=true, IsHome=true},
+            new Product {Name="Xaomi Redmi 9 Pro", Price=13000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-9-pro", IsApproved=true, ImageUrl="5.png"},
+            new Product {Name="Xaomi Redmi 10 Pro", Price=14000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-10-pro", IsApproved=true, ImageUrl="6.png"},
+            new Product {Name="Xaomi Redmi 11 Pro", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="xaomi-redmi-11-pro", IsApproved=true, ImageUrl="7.png"},
 
-            new Product {Name="Iphone XR", Price=12000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-xr", IsApproved=true, IsHome=true},
-            new Product {Name="Iphone 11", Price=13000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-11", IsApproved=true, IsHome=true},
-            new Product {Name="Iphone 12", Price=14000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-12", IsApproved=true, IsHome=true},
-            new Product {Name="Iphone 13", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-13", IsApproved=true, IsHome=true},
-            new Product {Name="Iphone 13 Max", Price=16000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-13-max", IsApproved=true, IsHome=true},
+            new Product {Name="Iphone XR", Price=12000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-xr", IsApproved=true, ImageUrl="8.png"},
+            new Product {Name="Iphone 11", Price=13000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-11", IsApproved=true, ImageUrl="9.png"},
+            new Product {Name="Iphone 12", Price=14000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-12", IsApproved=true, ImageUrl="10.png"},
+            new Product {Name="Iphone 13", Price=15000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-13", IsApproved=true, ImageUrl="11.png"},
+            new Product {Name="Iphone 13 Max", Price=16000, Description="Bu telefon çok iyi bir telefon.", Url="iphone-13-max", IsApproved=true, ImageUrl="12.png" },
 
-            new Product {Name="Huawei Mate 20 Pro", Price=20000, Description="Bu telefon çok iyi bir telefon.", Url="huawei-mate-20-pro", IsApproved=true, IsHome=true}
+            new Product {Name="Huawei Mate 20 Pro", Price=20000, Description="Bu telefon çok iyi bir telefon.", Url="huawei-mate-20-pro", IsApproved=true, ImageUrl="13.png"}
         };
 
         private static ProductCategory[] ProductCategories=

@@ -8,7 +8,7 @@
             <div class="form-group row mb-2">
                 <label class="col-form-label col-sm-3">Name:</label>
                 <div class="col-sm-9">
-                    <input type="text" asp-for="Name" class="form-control"/>
+                    <input type="text" asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
@@ -48,24 +48,10 @@
             @foreach (var item in (List<Category>)ViewBag.Categories)
             {
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" 
-value="@item.CategoryId"
-name="categoryIds" id="category_@item.CategoryId"
-@{ 
-    try
-    {
-         @if (Model != null) { @(Model.SelectedCategories.Any(i => i.CategoryId == item.CategoryId) ? "checked" : "") }
-    }
-    catch (Exception)
-    {
-
-        
-    }
-}                           
-                           
-                           
-                           
-                           />
+                    <input type="checkbox" class="form-check-input"
+                           value="@item.CategoryId"
+                           name="categoryIds" id="category_@item.CategoryId"
+                           @{ try { @if (Model != null) { @(Model.SelectedCategories.Any(i => i.CategoryId == item.CategoryId) ? "checked" : "") }  } catch (Exception) {   } } />
                     <label class="form-check-label">@item.Name</label>
                 </div>
             }

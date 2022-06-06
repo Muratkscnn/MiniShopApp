@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace MiniShopApp.WebUI.Identity
 {
-    public class SeedIdentity
+    public static class SeedIdentity
     {
-        public static async Task Seed(UserManager<User> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration) 
+        public static async Task Seed(UserManager<User> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration)
         {
+            //Admin oluşturma
             var adminUserName = configuration["UserData:AdminUser:UserName"];
             var adminPassword = configuration["UserData:AdminUser:Password"];
             var adminEmail = configuration["UserData:AdminUser:Email"];
@@ -20,38 +21,40 @@ namespace MiniShopApp.WebUI.Identity
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
                 var adminUser = new User()
                 {
-                    FirstName = "Admin",
-                    LastName = "AdminOğlu",
-                    UserName = adminUserName,
-                    Email = adminEmail,
-                    EmailConfirmed = true
+                    FirstName="Admin",
+                    LastName="Adminoğlu",
+                    UserName=adminUserName,
+                    Email=adminEmail,
+                    EmailConfirmed=true
                 };
-                var result=await userManager.CreateAsync(adminUser, adminPassword);
+                var result = await userManager.CreateAsync(adminUser, adminPassword);
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(adminUser, adminRole);
                 }
             }
 
-            var customerUserUserName = configuration["UserData:CustomerUser:UserName"];
-            var customerUserPassword = configuration["UserData:CustomerUser:Password"];
-            var customerUserEmail = configuration["UserData:CustomerUser:Email"];
-            var customerUserRole = configuration["UserData:CustomerUser:Role"];
-            if (await userManager.FindByNameAsync(customerUserUserName) == null)
+
+            //User oluşturma
+            var customerUserName = configuration["UserData:CustomerUser:UserName"];
+            var customerPassword = configuration["UserData:CustomerUser:Password"];
+            var customerEmail = configuration["UserData:CustomerUser:Email"];
+            var customerRole = configuration["UserData:CustomerUser:Role"];
+            if (await userManager.FindByNameAsync(customerUserName) == null)
             {
-                await roleManager.CreateAsync(new IdentityRole(customerUserRole));
+                await roleManager.CreateAsync(new IdentityRole(customerRole));
                 var customerUser = new User()
                 {
                     FirstName = "Customer",
-                    LastName = "CustomerOğlu",
-                    UserName = customerUserUserName,
-                    Email = customerUserEmail,
+                    LastName = "Customeroğlu",
+                    UserName = customerUserName,
+                    Email = customerEmail,
                     EmailConfirmed = true
                 };
-                var result = await userManager.CreateAsync(customerUser, customerUserPassword);
+                var result = await userManager.CreateAsync(customerUser, customerPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(customerUser, customerUserRole);
+                    await userManager.AddToRoleAsync(customerUser, customerRole);
                 }
             }
         }

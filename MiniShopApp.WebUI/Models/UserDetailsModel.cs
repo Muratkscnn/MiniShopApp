@@ -15,11 +15,10 @@ namespace MiniShopApp.WebUI.Models
         public string LastName { get; set; }
         [Required(ErrorMessage = "User Name boş bırakılamaz")]
         public string UserName { get; set; }
-        [Required(ErrorMessage = "Email adresi boş bırakılamaz")]
-        [DataType(DataType.EmailAddress,ErrorMessage ="Lütfen geçerli bi email adresi giriniz")]
+        [Required(ErrorMessage = "Email boş bırakılamaz")]
+        [DataType(DataType.EmailAddress,ErrorMessage ="Lütfen geçerli bir email adresi giriniz")]
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public IEnumerable<string> SelectedRoles { get; set; }
-
     }
 }

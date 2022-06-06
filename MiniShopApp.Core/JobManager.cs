@@ -30,6 +30,7 @@ namespace MiniShopApp.Core
             url=url.Replace("ş", "s");
             url=url.Replace("ü", "u");
             url=url.Replace("ç", "c");
+            
             url=url.Replace(" ", "-");
             url=url.Replace(".", "");
 
@@ -46,16 +47,16 @@ namespace MiniShopApp.Core
             }
             return randomName;
         }
-        public static string CreateMessage(string title,string message, string alertType)
+
+        public static string CreateMessage(string title, string message, string alertType)
         {
             var msg = new AlertMessage()
             {
-                Title=title,
+                Title = title,
                 Message = message,
                 AlertType = alertType
             };
-            return JsonConvert.SerializeObject(msg);
+            return  JsonConvert.SerializeObject(msg);
         }
-
     }
 }
