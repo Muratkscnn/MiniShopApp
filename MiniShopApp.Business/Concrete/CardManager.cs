@@ -18,6 +18,38 @@ namespace MiniShopApp.Business.Concrete
             _cardRepsitory = cardRepsitory;
         }
 
+        public void AddToCard(string userId, int ProductId, int Quantity)
+        {
+            var card = GetCardByUserId(userId);
+            if (card!=null)
+            {
+                var index = card.CardItems.FindIndex(i => i.ProductId == ProductId);
+                if (index<0)
+                {
+                    card.CardItems.Add(new CardItem()
+                    {
+                        ProductId = ProductId,
+                        Quantity = Quantity,
+                        CardId = card.Id
+                    });
+                }
+                else
+                {
+                    card.CardItems[index].Quantity += Quantity;
+                }
+                _cardRepsitory.Update(card);
+            }
+        }
+
+        public void DeleteFromCard(string userId, int productId)
+        {
+            var card = GetCardByUserId(userId);
+            if (card!=null)
+            {
+                _cardRepsitory.DeleteFromCard(card.Id,productId);
+            }
+        }
+
         public Card GetCardByUserId(string userId)
         {
             return _cardRepsitory.GetCardByUseId(userId);

@@ -36,7 +36,7 @@ else
                             <td>@item.Quantity</td>
                             <td>@(item.Price*item.Quantity)</td>
                             <td>
-                                <form asp-controller="Card" asp-action="DeleteFromCad" method="post">
+                                <form asp-controller="Card" asp-action="DeleteFromCard" method="post">
                                     <input type="hidden" name="ProductId" value="@item.ProductId" />
                                     <button class="btn btn-danger btn-sm" type="submit">
                                         <i class="fa-solid fa-circle-xmark"></i>
@@ -64,6 +64,10 @@ else
                     <td>@Model.TotalPrice().ToString("c")</td>
                 </tr>
             </table>
+            <div>
+                <a href="/" class="btn btn-primary"><i class="fa-solid fa-circle-arrow-left"></i>Continue Shopping</a>
+                <a href="/checkout" class="btn btn-success"><i class="fa-solid fa-circle-arrow-right"></i>Check Out</a>
+            </div>
         </div>
     </div>
 }

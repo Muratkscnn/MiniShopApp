@@ -114,6 +114,11 @@ namespace MiniShopApp.WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "checkout",
+                    pattern: "checkout",
+                    defaults: new { controller = "Card", action = "CheckOut" }
+                    );
+                endpoints.MapControllerRoute(
                     name: "card",
                     pattern: "card",
                     defaults: new { controller = "Card", action = "Index" }

@@ -42,5 +42,25 @@ namespace MiniShopApp.WebUI.Controllers
             };
             return View(model);
         }
+        [HttpPost]
+        public IActionResult AddToCard(int ProductId,int Quantity)
+        {
+            var userId = _userManager.GetUserId(User);
+            _cardService.AddToCard(userId,ProductId,Quantity);
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult DeleteFromCard(int productId)
+        {
+            var userId = _userManager.GetUserId(User);
+            _cardService.DeleteFromCard(userId, productId);
+            return RedirectToAction("Index");
+            
+        }
+        [HttpGet]
+        public IActionResult CheckOut()
+        {
+            return View();
+        }
     }
 }
