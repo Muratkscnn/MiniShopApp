@@ -15,7 +15,7 @@
     <partial name="_NavBar" />
     <div class="container">
         <main role="main" class="pb-3">
-            @*@if (TempData["Message"] != null)
+            @if (TempData["Message"] != null)
             {
                 var message = JsonConvert.DeserializeObject<AlertMessage>(TempData["Message"] as String);
                 <div class="row">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-            }*@
+            }
             @RenderBody()
         </main>
     </div>
