@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MiniShopApp.Business.Abstract;
 using MiniShopApp.Core;
+using MiniShopApp.Entity;
 using MiniShopApp.WebUI.Identity;
 using MiniShopApp.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OrderItem = MiniShopApp.Entity.OrderItem;
 
 namespace MiniShopApp.WebUI.Controllers
 {
@@ -20,11 +22,13 @@ namespace MiniShopApp.WebUI.Controllers
     {
         private ICardService _cardService;
         private UserManager<User> _userManager;
+        private IOrderService _orderService;
 
-        public CardController(ICardService cardService, UserManager<User> userManager)
+        public CardController(ICardService cardService, UserManager<User> userManager, IOrderService orderService)
         {
             _cardService = cardService;
             _userManager = userManager;
+            _orderService = orderService;
         }
 
         public IActionResult Index()
@@ -106,8 +110,8 @@ namespace MiniShopApp.WebUI.Controllers
                 var payment = PaymentProcess(orderModel);
                 if (payment.Status=="success")
                 {
-                    //SaveOrder();
-                    //ClearCard();
+                    SaveOrder(orderModel,payment,userId);
+                    _cardService.ClearCard(userId);
                     TempData["Message"] = JobManager.CreateMessage("Bilgi", "Ödemeniz gerçekleşti", "success");
                     return Redirect("~/");
                 }
@@ -118,6 +122,40 @@ namespace MiniShopApp.WebUI.Controllers
 
             }
             return View(orderModel);
+        }
+
+        private void SaveOrder(OrderModel orderModel, Payment payment, string userId)
+        {
+            var order = new Order()
+            {
+                OrderNumber = new Random().Next(100000000, 999999999).ToString(),
+                OrderState = EnumOrderState.Completed,
+                PaymentType = EnumPaymentType.CreditCard,
+                PaymentId = payment.PaymentId,
+                ConversationId = payment.ConversationId,
+                OrderDate = DateTime.Now,
+                FirstName = orderModel.FirstName,
+                LastName = orderModel.LastName,
+                UserId = userId,
+                Adress = orderModel.Adress,
+                City = orderModel.City,
+                Phone = orderModel.Phone,
+                Email = orderModel.Email,
+                Note = orderModel.Note,
+
+            };
+            order.OrderItems = new List<OrderItem>();
+            foreach (var item in orderModel.CardModel.CardItems)
+            {
+                var orderItem = new OrderItem()
+                {
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    ProductId = item.ProductId
+                };
+                order.OrderItems.Add(orderItem);
+            }
+            _orderService.Create(order);
         }
 
         private Payment PaymentProcess(OrderModel orderModel)
@@ -199,5 +237,16 @@ namespace MiniShopApp.WebUI.Controllers
             Payment payment = Payment.Create(request, options);
             return payment;
         }
+
+        public static bool Luhn(string digits)
+        {
+            return digits.All(char.IsDigit) && digits.Reverse()
+                .Select(c => c - 48)
+                .Select((thisNum, i) => i % 2 == 0
+                    ? thisNum
+                    : ((thisNum *= 2) > 9 ? thisNum - 9 : thisNum)
+                ).Sum() % 10 == 0;
+        }
+
     }
 }

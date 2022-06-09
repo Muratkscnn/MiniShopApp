@@ -20,6 +20,7 @@ namespace MiniShopApp.WebUI.Models
         public string Cvc { get; set; }
         public CardModel CardModel { get; set; }
 
+        public string Note { get; set; }
 
     }
 }

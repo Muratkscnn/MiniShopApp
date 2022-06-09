@@ -41,6 +41,15 @@ namespace MiniShopApp.Business.Concrete
             }
         }
 
+        public void ClearCard(string userId)
+        {
+            var card = GetCardByUserId(userId);
+            if (card != null)
+            {
+                _cardRepsitory.ClearCard(card.Id);
+            }
+        }
+
         public void DeleteFromCard(string userId, int productId)
         {
             var card = GetCardByUserId(userId);

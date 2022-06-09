@@ -82,10 +82,12 @@ namespace MiniShopApp.WebUI
             services.AddScoped<IProductRepository, EfCoreProductRepository>();
             services.AddScoped<ICategoryRepository, EfCoreCategoryRepository>();
             services.AddScoped<ICardRepository, EfCoreCardRepository>();
+            services.AddScoped<IOrderRepository, EfCoreOrderRepository>();
             services.AddScoped<IProductService, ProductManager>();
             //Proje boyunca ICategoryService çaðrýldýðýnda, CategoryManager'i kullan.
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<ICardService, CardManager>();
+            services.AddScoped<IOrderService, OrderManager>();
             //Projemizin MVC yapýsýnda olmasýný saðlar.
             services.AddControllersWithViews();
         }
