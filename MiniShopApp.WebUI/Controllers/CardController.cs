@@ -50,6 +50,42 @@ namespace MiniShopApp.WebUI.Controllers
             };
             return View(model);
         }
+
+        public IActionResult GetOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var orders = _orderService.GetOrders(userId);
+            var orderListModel = new List<OrderListModel>();
+            OrderListModel orderModel;
+            foreach (var order in orders)
+            {
+                orderModel = new OrderListModel();
+                orderModel.Id = order.Id;
+                orderModel.FirstName = order.FirstName;
+                orderModel.LastName = order.LastName;
+                orderModel.OrderNumber = order.OrderNumber;
+                orderModel.Adress = order.Adress;
+                orderModel.OrderDate = order.OrderDate;
+                orderModel.City = order.City;
+                orderModel.Phone = order.Phone;
+                orderModel.Email = order.Email;
+                orderModel.OrderState = order.OrderState;
+                orderModel.PaymentType = order.PaymentType;
+                orderModel.OrderItems = order.OrderItems.Select(x => new OrderItemModel()
+                {
+                    OrtemItemId = x.Id,
+                    Name = x.Product.Name,
+                    Price = (double)x.Price,
+                    Quantity=x.Quantity,
+                    ImageUrl=x.Product.ImageUrl
+                }).ToList();
+                orderListModel.Add(orderModel);
+            }
+            
+
+            return View("orders",orderListModel);
+        }
+       
         [HttpPost]
         public IActionResult AddToCard(int ProductId,int Quantity)
         {
@@ -119,7 +155,6 @@ namespace MiniShopApp.WebUI.Controllers
                 {
                     TempData["Message"] = JobManager.CreateMessage("Dikkat", payment.ErrorMessage, "danger");
                 }
-
             }
             return View(orderModel);
         }
