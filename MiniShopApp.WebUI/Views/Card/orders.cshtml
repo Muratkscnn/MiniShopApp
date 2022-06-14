@@ -1,53 +1,55 @@
 ﻿@model List<OrderListModel>
-
 <h6 class="display-4">Orders</h6>
 <hr />
-
 @foreach (var order in Model)
 {
-    <table class="table table-sm table-bordered mb-3">
+    <table class="table table-sm table-bordered">
         <thead>
-            <tr class="table-info">
-                <th colspan="2">#@order.OrderNumber | @order.OrderDate</th>
-                <td>Price</td>
-                <td>Quantity</td>
-                <td>Total</td>
+            <tr class="table-danger">
+                <th colspan="2">Order Number: #@order.OrderNumber | Order Date: @order.OrderDate</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach (var item in order.OrderItems)
+            @foreach (var orderItem in order.OrderItems)
             {
                 <tr>
                     <td width="25">
-                        <a href=""><img src="~/img/@item.ImageUrl" width="20" /></a>
+                        <img src="~/img/@orderItem.ImageUrl" alt="Alternate Text" width="20" />
                     </td>
-                    <td>@item.Name</td>
-                    <td width="100">@item.Price</td>
-                    <td width="25">@item.Quantity</td>
-                    <td width="150">@((item.Price*item.Quantity).ToString("c"))</td>
+                    <td>@orderItem.Name</td>
+                    <td width="100">@orderItem.Price</td>
+                    <td width="20">@orderItem.Quantity</td>
+                    <td width="150">@((orderItem.Price*orderItem.Quantity).ToString("c"))</td>
                 </tr>
-
             }
         </tbody>
+    </table>
+    <table class="table table-sm table-bordered mb-3">
         <tfoot>
             <tr>
-                <th colspan="4"><span class="text-info">Customer Name: </span>@order.FirstName  @order.LastName</th>
-                <td rowspan="4">@order.TotalPrice().ToString("c")</td>
+                <td colspan="2"><span class="text-danger">Customer Name: </span>@order.FirstName @order.LastName</td>
+                <td rowspan="4" width="150">Total: @order.TotalPrice().ToString("c")</td>
             </tr>
-            <tr>
-                <th colspan="2"><span class="text-info">Customer Adress: </span>@order.Adress </th>
-                <th colspan="2" width="400"><span class="text-info">Customer City: </span>@order.City </th>
 
-            </tr>
             <tr>
-                <th colspan="2"><span class="text-info">Customer Phone: </span>@order.Phone </th>
-                <th colspan="2"><span class="text-info">Customer Email: </span>@order.Email </th>
+                <td><span class="text-danger">Customer Address: </span>@order.Address</td>
+                <td><span class="text-danger">Customer City: </span>@order.City</td>
+            </tr>
 
-            </tr>
             <tr>
-                <th colspan="2"><span class="text-info">Order State: </span>@order.OrderState </th>
-                <th colspan="2"><span class="text-info">Payment Type: </span>@order.PaymentType  </th>
+                <td><span class="text-danger">Customer Phone: </span>@order.Phone</td>
+                <td><span class="text-danger">Customer Email: </span>@order.Email</td>
             </tr>
+
+            <tr>
+                <td><span class="text-danger">Order Status: </span>@order.OrderState</td>
+                <td><span class="text-danger">Payment Type: </span>@order.PaymentType</td>
+            </tr>
+
         </tfoot>
     </table>
 }

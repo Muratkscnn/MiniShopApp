@@ -11,10 +11,11 @@ namespace MiniShopApp.Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
-        private ICategoryRepository _categoryRepository;
-        public CategoryManager(ICategoryRepository categoryRepository)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CategoryManager(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
         public void Create(Category entity)
         {
@@ -28,7 +29,7 @@ namespace MiniShopApp.Business.Concrete
 
         public List<Category> GetAll()
         {
-            return _categoryRepository.GetAll();
+            return _unitOfWork.Categories.GetAll();
         }
 
         public Category GetById(int id)

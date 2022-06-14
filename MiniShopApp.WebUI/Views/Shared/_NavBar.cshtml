@@ -18,10 +18,10 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="Index" asp-route-category="">Card</a>
+                                <a href="/card" class="nav-link text-dark">Card</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="GetOrders" asp-route-category="">Orders</a>
+                                <a href="/orders" class="nav-link text-dark">Orders</a>
                             </li>
                             @if (User.IsInRole("Admin"))
                             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using MiniShopApp.Business.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,52 +10,42 @@ namespace MiniShopApp.WebUI.Identity
 {
     public static class SeedIdentity
     {
-        public static async Task Seed(UserManager<User> userManager,RoleManager<IdentityRole> roleManager,IConfiguration configuration)
+        public static async Task Seed(UserManager<User> userManager,RoleManager<IdentityRole> roleManager, ICardService cardService, IConfiguration configuration)
         {
-            //Admin oluşturma
-            var adminUserName = configuration["UserData:AdminUser:UserName"];
-            var adminPassword = configuration["UserData:AdminUser:Password"];
-            var adminEmail = configuration["UserData:AdminUser:Email"];
-            var adminRole = configuration["UserData:AdminUser:Role"];
-            if (await userManager.FindByNameAsync(adminUserName)==null)
+            var roles = configuration.GetSection("UserData:Roles").GetChildren().Select(r => r.Value).ToArray();
+            foreach (var role in roles)
             {
-                await roleManager.CreateAsync(new IdentityRole(adminRole));
-                var adminUser = new User()
+                if (!await roleManager.RoleExistsAsync(role))
                 {
-                    FirstName="Admin",
-                    LastName="Adminoğlu",
-                    UserName=adminUserName,
-                    Email=adminEmail,
-                    EmailConfirmed=true
-                };
-                var result = await userManager.CreateAsync(adminUser, adminPassword);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(adminUser, adminRole);
+                    await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
 
-
-            //User oluşturma
-            var customerUserName = configuration["UserData:CustomerUser:UserName"];
-            var customerPassword = configuration["UserData:CustomerUser:Password"];
-            var customerEmail = configuration["UserData:CustomerUser:Email"];
-            var customerRole = configuration["UserData:CustomerUser:Role"];
-            if (await userManager.FindByNameAsync(customerUserName) == null)
+            var users = configuration.GetSection("UserData:Users");
+            foreach (var section in users.GetChildren())
             {
-                await roleManager.CreateAsync(new IdentityRole(customerRole));
-                var customerUser = new User()
+                var userName = section.GetValue<string>("UserName");
+                var password = section.GetValue<string>("Password");
+                var email = section.GetValue<string>("Email");
+                var role = section.GetValue<string>("Role");
+                var firstName = section.GetValue<string>("FirstName");
+                var lastName = section.GetValue<string>("LastName");
+                if (await userManager.FindByNameAsync(userName)==null)
                 {
-                    FirstName = "Customer",
-                    LastName = "Customeroğlu",
-                    UserName = customerUserName,
-                    Email = customerEmail,
-                    EmailConfirmed = true
-                };
-                var result = await userManager.CreateAsync(customerUser, customerPassword);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(customerUser, customerRole);
+                    var user = new User()
+                    {
+                        UserName = userName,
+                        Email = email,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        EmailConfirmed=true
+                    };
+                    var result = await userManager.CreateAsync(user, password);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, role);
+                        cardService.InitializeCard(user.Id);
+                    }
                 }
             }
         }

@@ -1,26 +1,25 @@
 ﻿@model Product
 <div class="card mb-2">
     <div class="card-img p-2 text-md-center">
-        <img src="~/img/@Model.ImageUrl" class="img-fluid"/>
+        <img src="~/img/@Model.ImageUrl" class="img-fluid" />
     </div>
-    
+
     <div class="card-body">
         <h5 class="card-title text-center">@Model.Name</h5>
         <small class="text-muted">
             <i class="fa-solid fa-turkish-lira-sign"></i>@Model.Price
         </small>
         <div class="card-footer bg-white text-center d-flex justify-content-around p-1">
-            <a 
-               asp-controller="MiniShop"
+            <a asp-controller="MiniShop"
                asp-action="Details"
                asp-route-url=@Model.Url
                class="btn btn-sm btn-primary">Detail</a>
             @if (User.Identity.IsAuthenticated)
             {
                 <form asp-controller="Card" asp-action="AddToCard" method="post">
-                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
-                    <input type="hidden" name="Quantity" value="1" />
-                    <button type="submit" class="btn btn-primary">Add To Card</button>
+                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-sm btn-primary">Add To Card</button>
                 </form>
             }
         </div>

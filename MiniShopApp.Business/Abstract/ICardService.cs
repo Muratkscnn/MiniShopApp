@@ -9,11 +9,10 @@ namespace MiniShopApp.Business.Abstract
 {
     public interface ICardService
     {
-        Card GetCardByUserId(string userId);
         void InitializeCard(string userId);
-        void AddToCard(string userId,int ProductId,int Quantity);
+        Card GetCardByUserId(string userId);
+        void AddToCard(string userId, int productId, int quantity);
         void DeleteFromCard(string userId, int productId);
-        void ClearCard(string userId);
-
+        void ClearCard(int cardId);
     }
 }

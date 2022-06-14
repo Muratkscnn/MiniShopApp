@@ -9,20 +9,28 @@ using System.Threading.Tasks;
 
 namespace MiniShopApp.Data.Concrete.EfCore
 {
-    public class EfCoreOrderRepository : EfCoreGenericRepository<Order, MiniShopContext>, IOrderRepository
+
+    public class EfCoreOrderRepository : EfCoreGenericRepository<Order>, IOrderRepository
     {
+        public EfCoreOrderRepository(MiniShopContext context) : base(context)
+        {
+
+        }
+        private MiniShopContext MiniShopContext
+        {
+            get { return _context as MiniShopContext; }
+        }
         public List<Order> GetOrders(string userId=null)
         {
-            using (MiniShopContext c=new MiniShopContext())
-            {
-                var orders= c.Orders.Include(x => x.OrderItems).ThenInclude(y => y.Product)
+                var orders = MiniShopContext.Orders
+                    .Include(i => i.OrderItems)
+                    .ThenInclude(i => i.Product)
                     .AsQueryable();
-                if (!string.IsNullOrEmpty(userId))
+                if (!String.IsNullOrEmpty(userId))
                 {
-                    orders = orders.Where(x => x.UserId == userId);
+                    orders = orders.Where(i => i.UserId == userId);
                 }
                 return orders.ToList();
-            }
         }
     }
 }

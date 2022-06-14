@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MiniShopApp.Entity
 {
@@ -12,6 +13,8 @@ namespace MiniShopApp.Entity
         public string Url { get; set; }
         public bool IsApproved { get; set; }
         public bool IsHome { get; set; }
+        public DateTime DateAdded { get; set; }
+
         public List<ProductCategory> ProductCategories { get; set; }
     }
 }

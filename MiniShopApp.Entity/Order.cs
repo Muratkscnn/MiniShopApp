@@ -14,7 +14,7 @@ namespace MiniShopApp.Entity
         public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string City { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
@@ -24,13 +24,15 @@ namespace MiniShopApp.Entity
         public EnumPaymentType PaymentType { get; set; }
         public EnumOrderState OrderState { get; set; }
         public List<OrderItem> OrderItems { get; set; }
-    }
 
+    }
+  
     public enum EnumPaymentType
     {
         CreditCard=0,
         Eft=1
     }
+
     public enum EnumOrderState
     {
         Waiting=0,

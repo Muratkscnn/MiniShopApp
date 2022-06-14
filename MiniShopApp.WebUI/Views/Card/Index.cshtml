@@ -1,13 +1,12 @@
 ﻿@model CardModel
-
 <h6 class="display-4">Shopping Card</h6>
 <hr />
-@if (Model.CardItems.Count==0)
+@if (Model.CardItems.Count == 0)
 {
     <div class="row">
         <div class="col-md-12">
             <div class="alert alert-warning">
-                Sepenizde ürün yok!
+                Sepetinizde ürün yok!
             </div>
         </div>
     </div>
@@ -16,57 +15,69 @@ else
 {
     <div class="row">
         <div class="col-md-8">
-            <div>
-                <h6>Card Items</h6>
-                <table class="table table-hover table-sm table-bordered">
+            <div><h6>Card Items</h6></div>
+            <table class="table table-sm table-hover">
+                <thead>
                     <tr>
                         <th>Image</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Total Price</th>
-                        <th>Actions</th>
+                        <th>Total</th>
                     </tr>
-                    @foreach (var item in Model.CardItems)
+                </thead>
+                <tbody>
+                    @foreach (var cardItem in Model.CardItems)
                     {
                         <tr>
-                            <td><img src="~/img/@item.ImageUrl" width="50" /></td>
-                            <td>@item.ProductName</td>
-                            <td>@item.Price</td>
-                            <td>@item.Quantity</td>
-                            <td>@(item.Price*item.Quantity)</td>
+                            <td>
+                                <img src="~/img/@cardItem.ImageUrl" width="50" />
+                            </td>
+                            <td>@cardItem.Name</td>
+                            <td>@cardItem.Price</td>
+                            <td>@cardItem.Quantity</td>
+                            <td>@(cardItem.Price*cardItem.Quantity)</td>
                             <td>
                                 <form asp-controller="Card" asp-action="DeleteFromCard" method="post">
-                                    <input type="hidden" name="ProductId" value="@item.ProductId" />
-                                    <button class="btn btn-danger btn-sm" type="submit">
+                                    <input type="hidden" name="productId" value="@cardItem.ProductId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">
                                         <i class="fa-solid fa-circle-xmark"></i>
                                     </button>
                                 </form>
                             </td>
                         </tr>
                     }
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
         <div class="col-md-4">
             <div><h6>Card Summary</h6></div>
-            <table class="table table-sm table-bordered">
-                <tr>
-                    <th>Card Total</th>
-                    <td>@Model.TotalPrice().ToString("c")</td>
-                </tr>
-                <tr>
-                    <th>Shipping </th>
-                    <td>Free</td>
-                </tr>
-                <tr>
-                    <th>Order Total</th>
-                    <td>@Model.TotalPrice().ToString("c")</td>
-                </tr>
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <th>Card Total</th>
+                        <td>@Model.TotalPrice().ToString("c")</td>
+                    </tr>
+                    <tr>
+                        <th>Shipping</th>
+                        <td>Free</td>
+                    </tr>
+                    <tr>
+                        <th>Order Total</th>
+                        <td>@Model.TotalPrice().ToString("c")</td>
+                    </tr>
+                </tbody>
             </table>
             <div>
-                <a href="/" class="btn btn-primary"><i class="fa-solid fa-circle-arrow-left"></i>Continue Shopping</a>
-                <a href="/checkout" class="btn btn-success"><i class="fa-solid fa-circle-arrow-right"></i>Check Out</a>
+                <a href="/" class="btn btn-primary">
+                    <i class="fa-solid fa-circle-arrow-left"></i>
+                    Continue Shopping
+                </a>
+                <a href="/checkout" class="btn btn-success">
+                    Checkout
+                    <i class="fa-solid fa-circle-arrow-right"></i>
+
+                </a>
             </div>
         </div>
     </div>
