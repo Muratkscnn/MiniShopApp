@@ -8,4 +8,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MiniShopApp.Business\MiniShopApp.Business.csproj" />
+    <ProjectReference Include="..\MiniShopApp.Data\MiniShopApp.Data.csproj" />
+  </ItemGroup>
+
 </Project>

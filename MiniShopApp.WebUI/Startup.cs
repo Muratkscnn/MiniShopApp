@@ -32,11 +32,11 @@ namespace MiniShopApp.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationContext>(options => options.UseSqlite(Configuration.GetConnectionString("SqLiteConnection")));
-            //services.AddDbContext<MiniShopContext>(options => options.UseSqlite(Configuration.GetConnectionString("SqLiteConnection")));
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlite(Configuration.GetConnectionString("SqLiteConnection")));
+            services.AddDbContext<MiniShopContext>(options => options.UseSqlite(Configuration.GetConnectionString("SqLiteConnection")));
 
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
-            services.AddDbContext<MiniShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
+            //services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
+            //services.AddDbContext<MiniShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MsSqlConnection")));
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>().AddDefaultTokenProviders();
 

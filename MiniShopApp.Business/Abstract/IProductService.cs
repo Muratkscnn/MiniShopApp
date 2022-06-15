@@ -9,9 +9,10 @@ namespace MiniShopApp.Business.Abstract
 {
     public interface IProductService
     {
-        Product GetById(int id);
-        List<Product> GetAll();
+        Task<Product> GetById(int id);
+        Task<List<Product>> GetAll();
         void Create(Product entity);
+        Task<Product> CreateAsync(Product entity);
         void Update(Product entity);
         void Delete(Product entity);
         List<Product> GetProductsByCategory(string name, int page, int pageSize);

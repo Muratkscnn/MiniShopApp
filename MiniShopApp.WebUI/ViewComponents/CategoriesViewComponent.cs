@@ -14,13 +14,14 @@ namespace MiniShopApp.WebUI.ViewComponents
         {
             _categoryService = categoryService;
         }
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             if (RouteData.Values["category"]!=null)
             {
                 ViewBag.SelectedCategory = RouteData.Values["category"];
             }
-            return View(_categoryService.GetAll());
+            var categories = await _categoryService.GetAll();
+            return View(categories);
         }
     }
 }

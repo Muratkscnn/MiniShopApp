@@ -29,24 +29,31 @@ namespace MiniShopApp.Business.Concrete
             _unitOfWork.Save();
         }
 
+        public async Task<Product> CreateAsync(Product entity)
+        {
+            await _unitOfWork.Products.CreateAsync(entity);
+            await _unitOfWork.SaveAsync();
+            return entity;
+        }
+
         public void Delete(Product entity)
         {
             _unitOfWork.Products.Delete(entity);
             _unitOfWork.Save();
         }
 
-        public List<Product> GetAll()
+        public async Task<List<Product>> GetAll()
         {
             //Burada ürünlerin listelenmesi sağlanıyor.
             //Fakat ürün listeleme yapan metot çalıştırılmadan önce
             //Burada çeşitli iş kuralları uygulanacak.(Validation vb.)
             //Bunu daha sonra yazacağız.
-            return _unitOfWork.Products.GetAll();
+            return await _unitOfWork.Products.GetAll();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            return _unitOfWork.Products.GetById(id);
+            return await _unitOfWork.Products.GetById(id);
         }
 
         public Product GetByIdWithCategories(int id)
