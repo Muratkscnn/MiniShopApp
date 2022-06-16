@@ -42,6 +42,12 @@ namespace MiniShopApp.Business.Concrete
             _unitOfWork.Save();
         }
 
+        public async Task DeleteProductAsync(Product entity)
+        {
+            _unitOfWork.Products.Delete(entity);
+            await _unitOfWork.SaveAsync();
+        }
+
         public async Task<List<Product>> GetAll()
         {
             //Burada ürünlerin listelenmesi sağlanıyor.
@@ -97,5 +103,10 @@ namespace MiniShopApp.Business.Concrete
             _unitOfWork.Save();
         }
 
+        public async Task UpdateProductAsync(Product entityToUpdate, Product entity)
+        {
+            _unitOfWork.Products.UpdateProduct(entityToUpdate, entity);
+            await _unitOfWork.SaveAsync();
+        }
     }
 }

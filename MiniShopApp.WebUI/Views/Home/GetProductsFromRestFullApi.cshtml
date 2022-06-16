@@ -1,0 +1,14 @@
+﻿@model List<Product>
+
+    <h6>ProductsFromRestFullApi</h6>
+    <hr />
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <p>@item.Name</p>
+                <p>@item.Price</p>
+                <p><img src="~/img/@item.ImageUrl" width="100" /></p>
+            </div>
+        }
+        </div>

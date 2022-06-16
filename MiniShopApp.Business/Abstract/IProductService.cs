@@ -22,6 +22,8 @@ namespace MiniShopApp.Business.Abstract
         int GetCountByCategory(string category);
         void Create(Product entity, int[] categoryIds);
         void Update(Product entity, int[] categoryIds);
+        Task UpdateProductAsync(Product entityToUpdate, Product entity);
         Product GetByIdWithCategories(int id);
+        Task DeleteProductAsync(Product entity);
     }
 }

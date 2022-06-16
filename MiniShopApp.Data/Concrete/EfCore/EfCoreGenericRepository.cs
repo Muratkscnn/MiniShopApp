@@ -33,6 +33,7 @@ namespace MiniShopApp.Data.Concrete.EfCore
             _context.Set<TEntity>().Remove(entity);
         }
 
+
         public async Task<List<TEntity>> GetAll()
         {
             return await _context.Set<TEntity>().ToListAsync();
